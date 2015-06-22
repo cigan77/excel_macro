@@ -1,0 +1,53 @@
+
+Public Function IPAQ(IQ0101B As Integer, IQ0101C2 As Integer, IQ0101D As Integer, IQ0101E2 As Integer, IQ0101F As Integer, IQ0101G2 As Integer, _
+IQ0102A As Integer, IQ0102C As Integer, IQ0102E As Integer, IQ0102F2 As Integer, _
+IQ0103A As Integer, IQ0103B2 As Integer, IQ0103C As Integer, IQ0103D2 As Integer, IQ0103E As Integer, IQ0103F2 As Integer, _
+IQ0104A As Integer, IQ0104B2 As Integer, IQ0104C As Integer, IQ0104D2 As Integer, IQ0104E As Integer, IQ0104F2 As Integer, _
+gtpammin As Integer) As Integer
+
+Dim Moderat As Boolean
+Dim Vigor As Boolean
+Dim Calcolo As Integer
+Dim MinsMod As Integer
+Dim MinsWalk As Integer
+Dim DaysMod As Integer
+Dim DaysWalk As Integer
+
+MinsMod = (IQ0101E2 + IQ0103D2 + IQ0103F2 + IQ0104F2)
+MinsWalk = (IQ0101G2 + IQ0102F2 + IQ0104B2)
+DaysMod = (IQ0101D + IQ0103C + IQ0103E + IQ0104E)
+DaysWalk = (IQ0101F + IQ0102E + IQ0104A)
+
+If (MinsMod > 30) Then Calcolo = Calcolo + DaysMod
+If (MinsWalk > 30) Then Calcolo = Calcolo + DaysWalk
+
+
+IPAQ:
+If ((IQ0101C2 + IQ0103B2 + IQ0104D2) > 20) And ((IQ0101B + IQ0103A + IQ0104C) > 3) Then Moderat = True
+If ((gtpammin > 600) And ((IQ0101B + IQ0101D + IQ0101F + IQ0102A + IQ0102C + IQ0102E + IQ0103A + IQ0103C + IQ0103E + IQ0104A + IQ0104C + IQ0104E) > 5)) Then Moderat = True
+If (Calcolo > 4) Then Moderat = True
+
+If (((gtpammin > 1500) And ((IQ0101B + IQ0103A + IQ0104C) > 3)) Or (((IQ0101B + IQ0101D + IQ0101F + IQ0102A + IQ0102C + IQ0102E + IQ0103A + IQ0103C + IQ0103E + IQ0104A + IQ0104C + IQ0104E) > 7) And (gtpammin >= 3000))) Then Vigor = True
+
+IPAQ = Moderat + Vigor
+
+If IPAQ < 0 Then
+GoTo Controllo
+
+'Else
+'IPAQ = 0
+End If
+
+Controllo:
+If Vigor = True Then
+IPAQ = 2
+
+ElseIf Moderat = True Then
+
+IPAQ = 1
+Else
+IPAQ = 0
+
+End If
+
+End Function
